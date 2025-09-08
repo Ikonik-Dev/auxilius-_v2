@@ -1,0 +1,57 @@
+{# ===========================================
+   DESIGN SYSTEM - ATOMS
+   Composants atomiques de base (macros propres)
+   =========================================== #}
+
+{# Bouton atomique #}
+{% macro button(text, variant = 'primary', size = 'md', type = 'button', disabled = false) %}
+<button
+  class="btn btn--{{ variant }} btn--{{ size }}{% if disabled %} disabled{% endif %}"
+  type="{{ type }}"
+  {% if disabled %}disabled{% endif %}
+>
+  {{ text }}
+</button>
+{% endmacro %}
+
+{# Champ de saisie atomique #}
+{% macro input(name, type = 'text', placeholder = '', value = '', required = false, disabled = false) %}
+<input
+  id="{{ name }}"
+  type="{{ type }}"
+  class="form-input"
+  placeholder="{{ placeholder }}"
+  value="{{ value }}"
+  {% if required %}required{% endif %}
+  {% if disabled %}disabled{% endif %}
+>
+{% endmacro %}
+
+{# Label atomique #}
+{% macro label(text, forId = '') %}
+<label
+  class="form-label"
+  {% if forId %}for="{{ forId }}"{% endif %}
+>
+  {{ text }}
+</label>
+{% endmacro %}
+
+{# Badge atomique #}
+{% macro badge(text, variant = 'primary') %}
+<span class="badge badge--{{ variant }}">
+  {{ text }}
+</span>
+{% endmacro %}
+
+{# Spinner atomique #}
+{% macro spinner(size = 'md') %}
+<div class="spinner{% if size != 'md' %} spinner--{{ size }}{% endif %}"></div>
+{% endmacro %}
+
+{# Icône atomique #}
+{% macro icon(name, size = 'md') %}
+<svg class="icon icon--{{ size }}" fill="currentColor" viewBox="0 0 20 20">
+  <use xlink:href="#icon-{{ name }}"></use>
+</svg>
+{% endmacro %}

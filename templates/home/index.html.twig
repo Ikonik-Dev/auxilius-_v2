@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% import 'design-system/atoms/_atoms.html.twig' as atoms %}
+{% import 'design-system/molecules/_molecules.html.twig' as molecules %}
+{% import 'design-system/organisms/_organisms.html.twig' as organisms %}
+
+{% block title %}Accueil - Auxilius
+{% endblock %}
+
+{% block body %}
+	<div class="app">
+		{{ organisms.navbar(
+        'Auxilius',
+        [
+			{label: 'Accueil', url: '#', active: true},
+			{label: 'Design System', url: '#', active: false}
+        ]
+    ) }}
+
+		<div class="container py-12">
+			{{ organisms.page_header(
+            'Bienvenue sur Auxilius',
+            'Plateforme de gestion et de suivi de formation - Démonstration du Design System',
+            [
+				{label: 'Voir le Design System', url: '#', variant: 'primary'}
+            ]
+        ) }}
+
+			<div class="grid grid--2 gap-8 mt-12">
+				<div class="glass-card p-8">
+					<h2 class="text-2xl font-bold text-white mb-4">🎨 Design System</h2>
+					<p class="text-white opacity-80 mb-6">
+						Découvrez notre système de design complet avec tous les composants, 
+												                    styles et guidelines pour créer des interfaces cohérentes et modernes.
+					</p>
+					{{ atoms.button('Explorer les composants', 'primary') }}
+				</div>
+
+				<div class="glass-card p-8">
+					<h2 class="text-2xl font-bold text-white mb-4">📚 Documentation</h2>
+					<p class="text-white opacity-80 mb-6">
+						Consultez la documentation complète pour comprendre l'architecture 
+												                    et l'utilisation du système de design atomic mis en place.
+					</p>
+					{{ atoms.button('Lire la documentation', 'outline') }}
+				</div>
+			</div>
+
+			<div class="mt-16">
+				<h2 class="text-3xl font-bold text-white text-center mb-8">Aperçu des composants</h2>
+
+				<div class="grid grid--4 gap-6">
+					<div class="glass-card p-6 text-center">
+						<div class="text-4xl mb-4">⚛️</div>
+						<h3 class="text-lg font-semibold text-white mb-2">Atomes</h3>
+						<p class="text-white opacity-70 text-sm">Boutons, inputs, badges...</p>
+					</div>
+
+					<div class="glass-card p-6 text-center">
+						<div class="text-4xl mb-4">🧬</div>
+						<h3 class="text-lg font-semibold text-white mb-2">Molécules</h3>
+						<p class="text-white opacity-70 text-sm">Groupes de formulaires, cartes...</p>
+					</div>
+
+					<div class="glass-card p-6 text-center">
+						<div class="text-4xl mb-4">🦠</div>
+						<h3 class="text-lg font-semibold text-white mb-2">Organismes</h3>
+						<p class="text-white opacity-70 text-sm">Navigation, headers, tableaux...</p>
+					</div>
+
+					<div class="glass-card p-6 text-center">
+						<div class="text-4xl mb-4">📄</div>
+						<h3 class="text-lg font-semibold text-white mb-2">Templates</h3>
+						<p class="text-white opacity-70 text-sm">Layouts de pages complètes</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{{ organisms.footer([
+        {
+            title: 'Auxilius',
+            links: [
+                {label: 'À propos', url: '#'},
+                {label: 'Contact', url: '#'}
+            ]
+        },
+				{
+			title: 'Design System',
+			links: [
+				{label: 'Composants', url: '#'},
+				{label: 'Documentation', url: '#'}
+			]
+		}
+    ]) }}
+	</div>
+{% endblock %}

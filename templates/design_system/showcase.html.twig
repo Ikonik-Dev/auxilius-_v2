@@ -1,0 +1,491 @@
+{# ===========================================
+   SHOWCASE DESIGN SYSTEM
+   Page complète utilisant tous les composants
+   =========================================== #}
+
+{% extends 'base.html.twig' %}
+
+{# Import des macros #}
+{# macros will be imported inside the body block to ensure scope correctness #}{% block title %}
+Design System Showcase - Auxilius
+{% endblock %}
+
+	{% block stylesheets %}
+	{{ parent() }}
+		<style>
+.showcase-section {
+	margin-bottom: 4rem;
+}
+.component-demo {
+	margin-bottom: 2rem;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+	<div
+	class="app"> {# Import des macros (moved here to ensure template scope during rendering) #}
+	{% import 'design-system/atoms/_atoms.html.twig' as atoms %}
+	{% import 'design-system/molecules/_molecules.html.twig' as molecules %}
+	{% import 'design-system/organisms/_organisms.html.twig' as organisms %}
+	{# Navigation principale #}
+	{{ organisms.navbar(
+        'Auxilius',
+        [
+        {label: 'Accueil', url: '#', active: false},
+        {label: 'Design System', url: '#', active: true},
+        {label: 'Formations', url: '#', active: false},
+        {label: 'Dashboard', url: '#', active: false}
+        ],
+        {name: 'Stephane ASSABY-PARIS', role: 'Développeur'}
+    ) }}
+
+	<div
+		class="container py-8">
+		{# Header de page avec actions #}
+		{{ organisms.page_header(
+            'Showcase du Design System',
+            'Démonstration complète de tous les composants et éléments du design system Auxilius',
+            [
+                {label: 'Documentation', url: '#', variant: 'outline'},
+                {label: 'Exporter les styles', url: '#', variant: 'primary'}
+            ]
+        ) }}
+
+		{# Section 1: Statistiques #}
+		<section class="showcase-section">
+			<h2 class="text-3xl font-bold text-white mb-6">📊 Cartes de Statistiques</h2>
+
+			<div class="grid grid--4 gap-6 mb-8">
+				{% for stat in stats %}
+					{{ organisms.stat_card(
+                        stat.title,
+                        stat.value,
+                        stat.icon,
+                        stat.trend
+                    ) }}
+				{% endfor %}
+			</div>
+		</section>
+
+		{# Section 2: Alertes et Notifications #}
+		<section class="showcase-section">
+			<h2 class="text-3xl font-bold text-white mb-6">🔔 Alertes et Notifications</h2>
+
+			<div class="grid grid--2 gap-6">
+				<div class="space-y-4">
+					<h3 class="text-xl font-semibold text-white">Types d'alertes</h3>
+					{{ molecules.alert('Opération réalisée avec succès !', 'success', true) }}
+					{{ molecules.alert('Attention : Vérifiez vos informations', 'warning', true) }}
+					{{ molecules.alert('Erreur lors de la sauvegarde', 'error', true) }}
+					{{ molecules.alert('Information importante à retenir', 'info', true) }}
+				</div>
+
+				<div class="glass-card p-6">
+					<h3 class="text-xl font-semibold text-white mb-4">Notifications récentes</h3>
+					<div class="space-y-3">
+						{% for notification in notifications %}
+							<div class="notification-item flex items-start gap-3 p-3 rounded-lg">
+								<div class="flex-shrink-0 mt-1">
+									{% if notification.type == 'success' %}
+										<div class="w-2 h-2 bg-green-400 rounded-full"></div>
+									{% elseif notification.type == 'warning' %}
+										<div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+									{% else %}
+										<div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+									{% endif %}
+								</div>
+								<div class="flex-1">
+									<p class="text-white text-sm">{{ notification.message }}</p>
+									<span class="text-gray-300 on-glass text-xs">Il y a
+										{{ notification.time }}</span>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{# Section 3: Formulaires #}
+		<section class="showcase-section">
+			<h2 class="text-3xl font-bold text-white mb-6">📝 Formulaires et Champs</h2>
+
+			<div
+				class="grid grid--2 gap-8">
+				{# Formulaire de contact #}
+				<div class="glass-card p-6">
+					<h3 class="text-xl font-semibold text-white mb-6">Formulaire de Contact</h3>
+					<form class="space-y-4">
+						{{ molecules.form_group('contact_name', 'Nom complet', 'text', 'Votre nom', '', true) }}
+						{{ molecules.form_group('contact_email', 'Adresse email', 'email', 'votre@email.com', '', true) }}
+						{{ molecules.select_group('contact_subject', 'Sujet', [
+                            {value: 'formation', label: 'Question sur les formations'},
+                            {value: 'inscription', label: 'Demande d\'inscription'},
+                            {value: 'technique', label: 'Support technique'},
+                            {value: 'autre', label: 'Autre demande'}
+                        ]) }}
+                        {{ molecules.textarea_group('contact_message', 'Message', 'Votre message...', '', true) }}
+                        
+                        <div class="flex gap-3 pt-4">
+                            {{ atoms.button('Envoyer le message', 'primary', 'md', 'submit') }}
+                            {{ atoms.button('Annuler', 'ghost') }}
+                        </div>
+                    </form>
+                </div>
+
+                {# Champs divers #}
+                <div class="space-y-6">
+                    <div class="glass-card p-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">Champ de recherche</h3>
+                        {{ molecules.search_input('search_formations', 'Rechercher une formation...') }}
+                    </div>
+                    
+                    <div class="glass-card p-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">Types de boutons</h3>
+                        <div class="space-y-3">
+                            <div class="flex flex-wrap gap-2">
+                                {{ atoms.button('Primaire', 'primary') }}
+                                {{ atoms.button('Secondaire', 'secondary') }}
+                                {{ atoms.button('Outline', 'outline') }}
+                                {{ atoms.button('Ghost', 'ghost') }}
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2">
+                                {{ atoms.button('Petit', 'primary', 'sm') }}
+                                {{ atoms.button('Normal', 'primary', 'md') }}
+                                {{ atoms.button('Grand', 'primary', 'lg') }}
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2">
+                                {{ atoms.button('Désactivé', 'primary', 'md', 'button', true) }}
+                                <button class="btn btn--primary">
+                                    {{ atoms.spinner() }}
+                                    Chargement...
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# Section 4: Cartes de Formations #}
+        <section class="showcase-section">
+            <h2 class="text-3xl font-bold text-white mb-6">🎓 Catalogue de Formations</h2>
+            
+            <div class="grid grid--3 gap-6">
+                {% for formation in formations %}
+                    {# formation_show route may not exist in this project; use placeholder link inside the card to avoid route generation errors #}
+                    {% set formation_safe = formation|merge({'url': formation.url|default('#')}) %}
+                    {{ organisms.formation_card(formation_safe) }}
+                {% endfor %}
+            </div>
+        </section>
+
+        {# Section 5: Tableaux et Listes #}
+        <section class="showcase-section">
+            <h2 class="text-3xl font-bold text-white mb-6">📋 Tableaux et Données</h2>
+            
+            <div class="glass-card overflow-hidden">
+                <div class="p-6 border-b border-white border-opacity-10">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xl font-semibold text-white">Gestion des Utilisateurs</h3>
+                        <div class="flex gap-2">
+                            {{ molecules.search_input('search_users', 'Rechercher un utilisateur...') }}
+                            {{ atoms.button('Ajouter', 'primary', 'sm') }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Email</th>
+                                <th>Rôle</th>
+                                <th>Formation</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div class="avatar avatar--md bg-primary flex items-center justify-center text-white font-semibold">
+                                                {{ user.name|slice(0, 2)|upper }}
+                                            </div>
+                                            <span class="font-medium text-gray-900">{{ user.name }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-gray-600">{{ user.email }}</td>
+                                    <td>
+                                        {{ atoms.badge(user.role, user.role == 'Formateur' ? 'primary' : (user.role == 'Responsable' ? 'secondary' : 'success')) }}
+                                    </td>
+                                    <td class="text-gray-600">{{ user.formation }}</td>
+                                    <td>
+                                        {{ atoms.badge(user.status == 'active' ? 'Actif' : 'Inactif', user.status == 'active' ? 'success' : 'error') }}
+                                    </td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            {{ atoms.button('Voir', 'outline', 'sm') }}
+                                            {{ atoms.button('Modifier', 'ghost', 'sm') }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                {# Pagination #}
+                <div class="p-6 border-t border-white border-opacity-10">
+                    <div class="pagination">
+                        <div class="pagination__item">
+                            <a href="#" class="pagination__link pagination__link--disabled">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="pagination__item">
+                            <a href="#" class="pagination__link pagination__link--active">1</a>
+                        </div>
+                        <div class="pagination__item">
+                            <a href="#" class="pagination__link">2</a>
+                        </div>
+                        <div class="pagination__item">
+                            <a href="#" class="pagination__link">3</a>
+                        </div>
+                        <div class="pagination__item">
+                            <span class="pagination__link">...</span>
+                        </div>
+                        <div class="pagination__item">
+                            <a href="#" class="pagination__link">10</a>
+                        </div>
+                        <div class="pagination__item">
+                            <a href="#" class="pagination__link">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# Section 6: Badges et Indicateurs #}
+        <section class="showcase-section">
+            <h2 class="text-3xl font-bold text-white mb-6">🏷️ Badges et Indicateurs</h2>
+            
+            <div class="grid grid--3 gap-6">
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">États des formations</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {{ atoms.badge('En cours', 'primary') }}
+                        {{ atoms.badge('Planifiée', 'info') }}
+                        {{ atoms.badge('Terminée', 'success') }}
+                        {{ atoms.badge('Annulée', 'error') }}
+                        {{ atoms.badge('En attente', 'warning') }}
+                    </div>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Niveaux</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {{ atoms.badge('Débutant', 'success') }}
+                        {{ atoms.badge('Intermédiaire', 'warning') }}
+                        {{ atoms.badge('Avancé', 'error') }}
+                        {{ atoms.badge('Expert', 'secondary') }}
+                    </div>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Certifications</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            {{ atoms.badge('RNCP', 'primary') }}
+                            <span class="text-white text-sm">Titre professionnel</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            {{ atoms.badge('Attestation', 'secondary') }}
+                            <span class="text-white text-sm">Formation continue</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            {{ atoms.badge('Certificat', 'success') }}
+                            <span class="text-white text-sm">Compétences spécialisées</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# Section 7: Layout et Grilles #}
+        <section class="showcase-section">
+            <h2 class="text-3xl font-bold text-white mb-6">📐 Layouts et Grilles</h2>
+            
+            <div class="space-y-6">
+                {# Grille responsive #}
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Grille responsive (auto-fit)</h3>
+                    <div class="grid grid--auto-fit gap-4">
+                        {% for i in 1..6 %}
+                            <div class="bg-primary bg-opacity-20 p-4 rounded-lg text-center text-white">
+                                <div class="text-2xl font-bold">{{ i }}</div>
+                                <div class="text-sm opacity-75">Élément {{ i }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                {# Flexbox utilities #}
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Flexbox utilities</h3>
+                    <div class="space-y-4">
+                        <div class="notification-item flex justify-between items-center p-3 rounded">
+                            <span class="text-white">justify-between</span>
+                            <span class="text-white">items-center</span>
+                        </div>
+                        <div class="notification-item flex justify-center items-center p-3 rounded">
+                            <span class="text-white">justify-center items-center</span>
+                        </div>
+                        <div class="notification-item flex justify-evenly items-center p-3 rounded">
+                            <span class="text-white">1</span>
+                            <span class="text-white">2</span>
+                            <span class="text-white">3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# Section 8: Couleurs et Typographie #}
+        <section class="showcase-section">
+            <h2 class="text-3xl font-bold text-white mb-6">🎨 Couleurs et Typographie</h2>
+            
+            <div class="grid grid--2 gap-8">
+                {# Palette de couleurs #}
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Palette de couleurs</h3>
+                    <div class="grid grid--3 gap-3">
+                        <div class="text-center">
+                            <div class="w-full h-12 bg-primary rounded-lg mb-2"></div>
+                            <div class="text-white text-xs">Primary</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-full h-12 bg-secondary rounded-lg mb-2"></div>
+                            <div class="text-white text-xs">Secondary</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-full h-12 bg-success rounded-lg mb-2"></div>
+                            <div class="text-white text-xs">Success</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-full h-12 bg-warning rounded-lg mb-2"></div>
+                            <div class="text-white text-xs">Warning</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-full h-12 bg-error rounded-lg mb-2"></div>
+                            <div class="text-white text-xs">Error</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-full h-12 bg-white rounded-lg mb-2 border"></div>
+                            <div class="text-white text-xs">White</div>
+                        </div>
+                    </div>
+                </div>
+                
+                {# Typographie #}
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Échelle typographique</h3>
+                    <div class="space-y-3">
+                        <h1 class="text-5xl font-bold text-white">Heading 1</h1>
+                        <h2 class="text-4xl font-bold text-white">Heading 2</h2>
+                        <h3 class="text-3xl font-semibold text-white">Heading 3</h3>
+                        <h4 class="text-2xl font-semibold text-white">Heading 4</h4>
+                        <p class="text-base text-white">Corps de texte normal</p>
+                        <p class="text-sm text-gray-300 on-glass">Texte secondaire</p>
+                        <p class="text-xs text-gray-400 on-glass">Texte de caption</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {# Footer #}
+    {{ organisms.footer([
+        {
+            title: 'Plateforme',
+            links: [
+                {label: 'À propos', url: '#'},
+                {label: 'Contact', url: '#'},
+                {label: 'Support', url: '#'}
+            ]
+        },
+        {
+            title: 'Ressources',
+            links: [
+                {label: 'Documentation', url: '#'},
+                {label: 'API', url: '#'},
+                {label: 'Guides', url: '#'}
+            ]
+        },
+        {
+            title: 'Légal',
+            links: [
+                {label: 'Confidentialité', url: '#'},
+                {label: 'Conditions', url: '#'},
+                {label: 'Cookies', url: '#'}
+            ]
+        }
+    ]) }}
+</div>
+
+{# Scripts pour les interactions #}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion des dropdowns
+    const dropdowns = document.querySelectorAll('.dropdown');
+    dropdowns.forEach(dropdown => {
+        const toggle = dropdown.querySelector('.dropdown__toggle');
+        const menu = dropdown.querySelector('.dropdown__menu');
+        
+        if (toggle && menu) {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('dropdown--open');
+            });
+        }
+    });
+
+    // Fermer les dropdowns en cliquant ailleurs
+    document.addEventListener('click', () => {
+        dropdowns.forEach(dropdown => {
+            dropdown.classList.remove('dropdown--open');
+        });
+    });
+
+    // Gestion des alertes dismissible
+    const alertDismiss = document.querySelectorAll('.alert-dismiss');
+    alertDismiss.forEach(button => {
+        button.addEventListener('click', () => {
+            button.closest('.alert').style.display = 'none';
+        });
+    });
+
+    // Menu mobile
+    const navbarToggle = document.getElementById('navbar-toggle');
+    const navbarNav = document.getElementById('navbar-nav');
+    
+    if (navbarToggle && navbarNav) {
+        navbarToggle.addEventListener('click', () => {
+            navbarNav.classList.toggle('navbar__nav--open');
+        });
+    }
+});
+</script>
+{% endblock %}

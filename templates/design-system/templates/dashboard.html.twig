@@ -1,0 +1,41 @@
+{# ===========================================
+   DASHBOARD TEMPLATE
+   Template pour les pages de dashboard
+   =========================================== #}
+
+{% extends 'design-system/templates/layout.html.twig' %}
+
+{% block content %}
+<div
+	class="page-dashboard">
+	{# Header de page #}
+	{{ organisms.page_header(
+    block('title') ?: 'Dashboard',
+    block('subtitle'),
+    block('actions') is defined ? block('actions') : []
+  ) }}
+
+	{# Grille principale #}
+	<div
+		class="grid grid--responsive">
+		{# Sidebar de navigation #}
+		<div class="grid__sidebar">
+			{{ organisms.sidebar(
+        'Navigation',
+        [
+          {label: 'Vue d\'ensemble', url: '#', active: true},
+          {label: 'Statistiques', url: '#'},
+          {label: 'Utilisateurs', url: '#'},
+          {label: 'Formations', url: '#'},
+          {label: 'Rapports', url: '#'}
+        ]
+      ) }}
+    </div>
+
+    {# Contenu principal #}
+    <div class="grid__content">
+      {% block dashboard_content %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

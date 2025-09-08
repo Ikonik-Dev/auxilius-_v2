@@ -1,0 +1,176 @@
+{# ===========================================
+   PAGE D'EXEMPLE - DESIGN SYSTEM
+   Démonstration des composants du design system
+   =========================================== #}
+
+{% extends 'design-system/templates/layout.html.twig' %}
+
+{% block title %}Design System - Auxilius
+{% endblock %}
+
+{% block content %}
+<div
+	class="space-y-12">
+	{# Section des atomes #}
+	<section class="space-y-6">
+		<h2 class="text-3xl font-bold text-white">Atomes</h2>
+
+		<div
+			class="grid grid--4 gap-6">
+			{# Boutons #}
+			<div class="glass-card p-6">
+				<h3 class="text-xl font-semibold text-white mb-4">Boutons</h3>
+				<div class="space-y-3">
+					{{ atoms.button('Primaire', 'primary') }}
+					{{ atoms.button('Secondaire', 'secondary') }}
+					{{ atoms.button('Outline', 'outline') }}
+					{{ atoms.button('Ghost', 'ghost') }}
+				</div>
+			</div>
+
+			{# Champs de formulaire #}
+			<div class="glass-card p-6">
+				<h3 class="text-xl font-semibold text-white mb-4">Champs</h3>
+				<div class="space-y-4">
+					{{ atoms.input('email', 'email', 'votre@email.com') }}
+					{{ atoms.input('password', 'password', 'Mot de passe') }}
+				</div>
+			</div>
+
+			{# Badges #}
+			<div class="glass-card p-6">
+				<h3 class="text-xl font-semibold text-white mb-4">Badges</h3>
+				<div class="flex flex-wrap gap-2">
+					{{ atoms.badge('Primaire', 'primary') }}
+					{{ atoms.badge('Succès', 'success') }}
+					{{ atoms.badge('Avertissement', 'warning') }}
+					{{ atoms.badge('Erreur', 'error') }}
+				</div>
+			</div>
+
+			{# Spinner #}
+			<div class="glass-card p-6">
+				<h3 class="text-xl font-semibold text-white mb-4">Spinner</h3>
+				<div class="flex justify-center">
+					{{ atoms.spinner() }}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{# Section des molécules #}
+	<section class="space-y-6">
+		<h2 class="text-3xl font-bold text-white">Molécules</h2>
+
+		<div
+			class="grid grid--2 gap-6">
+			{# Groupe de formulaire #}
+			<div class="glass-card p-6">
+				<h3 class="text-xl font-semibold text-white mb-4">Groupe de formulaire</h3>
+				{{ molecules.form_group('username', 'Nom d\'utilisateur', 'text', 'Votre nom') }}
+        {{ molecules.form_group('email', 'Adresse email', 'email', 'votre@email.com', true) }}
+      </div>
+
+      {# Carte d'information #}
+      <div class="glass-card p-6">
+        <h3 class="text-xl font-semibold text-white mb-4">Carte d'information</h3>
+        {{ molecules.info_card(
+          'Bienvenue',
+          'Découvrez notre plateforme de gestion de formation Auxilius.',
+          'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+        ) }}
+      </div>
+    </div>
+
+    {# Champ de recherche #}
+    <div class="glass-card p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">Champ de recherche</h3>
+      {{ molecules.search_input('search', 'Rechercher une formation...') }}
+    </div>
+  </section>
+
+  {# Section des organismes #}
+  <section class="space-y-6">
+    <h2 class="text-3xl font-bold text-white">Organismes</h2>
+
+    {# Header de page #}
+    <div class="glass-card p-6">
+      {{ organisms.page_header(
+        'Catalogue des formations',
+        'Découvrez notre offre de formations qualifiantes et pré-qualifiantes',
+        [
+          {label: 'Ajouter une formation', url: '#', variant: 'primary'},
+          {label: 'Exporter', url: '#', variant: 'outline'}
+        ]
+      ) }}
+    </div>
+
+    {# Cartes de statistiques #}
+    <div class="grid grid--4 gap-6">
+      {{ organisms.stat_card(
+        'Total stagiaires',
+        '1,234',
+        'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'
+      ) }}
+      {{ organisms.stat_card(
+        'Formations actives',
+        '12',
+        'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'
+      ) }}
+      {{ organisms.stat_card(
+        'Taux de réussite',
+        '94%',
+        'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+      ) }}
+      {{ organisms.stat_card(
+        'Sessions planifiées',
+        '8',
+        'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+      ) }}
+    </div>
+  </section>
+
+  {# Section des couleurs #}
+  <section class="space-y-6">
+    <h2 class="text-3xl font-bold text-white">Palette de couleurs</h2>
+
+    <div class="grid grid--6 gap-4">
+      <div class="glass-card p-4 text-center">
+        <div class="w-full h-16 bg-primary rounded-lg mb-2"></div>
+        <div class="text-white text-sm">Primary</div>
+  <div class="text-gray-300 on-glass text-xs">#6366f1</div>
+      </div>
+
+      <div class="glass-card p-4 text-center">
+        <div class="w-full h-16 bg-secondary rounded-lg mb-2"></div>
+        <div class="text-white text-sm">Secondary</div>
+  <div class="text-gray-300 on-glass text-xs">#06b6d4</div>
+      </div>
+
+      <div class="glass-card p-4 text-center">
+        <div class="w-full h-16 bg-success rounded-lg mb-2"></div>
+        <div class="text-white text-sm">Success</div>
+  <div class="text-gray-300 on-glass text-xs">#10b981</div>
+      </div>
+
+      <div class="glass-card p-4 text-center">
+        <div class="w-full h-16 bg-warning rounded-lg mb-2"></div>
+        <div class="text-white text-sm">Warning</div>
+  <div class="text-gray-300 on-glass text-xs">#f59e0b</div>
+      </div>
+
+      <div class="glass-card p-4 text-center">
+        <div class="w-full h-16 bg-error rounded-lg mb-2"></div>
+        <div class="text-white text-sm">Error</div>
+  <div class="text-gray-300 on-glass text-xs">#ef4444</div>
+      </div>
+
+      <div class="glass-card p-4 text-center">
+        <div class="w-full h-16 bg-white rounded-lg mb-2 border"></div>
+        <div class="text-white text-sm">White</div>
+  <div class="text-gray-300 on-glass text-xs">#ffffff</div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

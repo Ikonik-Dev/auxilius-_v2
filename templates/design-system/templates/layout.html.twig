@@ -1,0 +1,54 @@
+{# ===========================================
+   DESIGN SYSTEM - TEMPLATES
+   Templates de mise en page
+   =========================================== #}
+
+{# Template de base avec navigation #}
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="layout">
+  {# Navigation principale #}
+  {{ organisms.navbar(
+    'Auxilius',
+    [
+  {label: 'Accueil', url: '#', active: app.request.get('_route') == 'app_home'},
+  {label: 'Formations', url: '#', active: app.request.get('_route') starts with 'formation'},
+  {label: 'Dashboard', url: '#', active: app.request.get('_route') starts with 'app_dashboard'}
+    ],
+    app.user ? {name: app.user.username} : null
+  ) }}
+
+  {# Contenu principal #}
+  <main class="layout__main">
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  {# Footer #}
+  {{ organisms.footer([
+    {
+      title: 'Plateforme',
+      links: [
+  {label: 'À propos', url: '#'},
+  {label: 'Contact', url: '#'},
+  {label: 'Support', url: '#'}
+      ]
+    },
+    {
+      title: 'Légal',
+      links: [
+  {label: 'Confidentialité', url: '#'},
+  {label: 'Conditions', url: '#'},
+  {label: 'Cookies', url: '#'}
+      ]
+    }
+  ]) }}
+</div>
+{% endblock %}

@@ -1,0 +1,230 @@
+{# ===========================================
+   DESIGN SYSTEM - ORGANISMS
+   Composants complexes et layouts
+   =========================================== #}
+
+{# Navigation principale #}
+{% macro navbar(brand, links, user = null) %}
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar__container">
+  <a href="#" class="navbar__brand">
+        {{ brand }}
+      </a>
+
+      <div class="navbar__nav" id="navbar-nav">
+        {% for link in links %}
+          <a
+            href="{{ link.url }}"
+            class="navbar__link{% if link.active %} navbar__link--active{% endif %}"
+          >
+            {{ link.label }}
+          </a>
+        {% endfor %}
+      </div>
+
+      {% if user %}
+        <div class="navbar__user">
+          <div class="dropdown">
+            <button class="dropdown__toggle navbar__link">
+              {{ user.name }}
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div class="dropdown__menu">
+              <a href="#" class="dropdown__item">Profil</a>
+              <a href="#" class="dropdown__item">Paramètres</a>
+              <div class="dropdown__divider"></div>
+              <a href="#" class="dropdown__item">Déconnexion</a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <button class="navbar__toggle" id="navbar-toggle">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+{% endmacro %}
+
+{# Header de page #}
+{% macro page_header(title, subtitle = null, actions = []) %}
+<header class="page-header">
+  <div class="container">
+    <h1 class="page-header__title">{{ title }}</h1>
+    {% if subtitle %}
+      <p class="page-header__subtitle">{{ subtitle }}</p>
+    {% endif %}
+    {% if actions %}
+      <div class="page-header__actions">
+        {% for action in actions %}
+          <a href="{{ action.url }}" class="btn btn--{{ action.variant|default('primary') }}">
+            {{ action.label }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</header>
+{% endmacro %}
+
+{# Sidebar de navigation #}
+{% macro sidebar(title, items) %}
+<aside class="sidebar">
+  {% if title %}
+    <h3 class="sidebar__title">{{ title }}</h3>
+  {% endif %}
+
+  <nav class="sidebar__nav">
+    {% for item in items %}
+      <a
+        href="{{ item.url }}"
+        class="sidebar__item{% if item.active %} sidebar__item--active{% endif %}"
+      >
+        {{ item.label }}
+      </a>
+    {% endfor %}
+  </nav>
+</aside>
+{% endmacro %}
+
+{# Carte de formation #}
+{% macro formation_card(formation) %}
+<div class="formation-card">
+  <div class="formation-card__content">
+    <h3 class="formation-card__title">{{ formation.name }}</h3>
+    <p class="formation-card__description">{{ formation.description }}</p>
+
+    <div class="formation-card__meta">
+      <span class="badge badge--{{ formation.category == 'qualifiant' ? 'primary' : 'secondary' }}">
+        {{ formation.category }}
+      </span>
+      <span class="text-sm">
+        {{ formation.duration }} heures
+      </span>
+      <span class="text-sm">
+        Max {{ formation.maxStudents }} stagiaires
+      </span>
+    </div>
+  </div>
+
+  <div class="formation-card__actions">
+    <a href="#" class="btn btn--outline btn--sm">
+      Voir détails
+    </a>
+  </div>
+</div>
+{% endmacro %}
+
+{# Carte de statistiques #}
+{% macro stat_card(title, value, icon = null, trend = null) %}
+<div class="stat-card">
+  {% if icon %}
+    <div class="stat-card__icon">
+      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ icon }}"></path>
+      </svg>
+    </div>
+  {% endif %}
+
+  <div class="stat-card__value">{{ value }}</div>
+  <div class="stat-card__label">{{ title }}</div>
+
+  {% if trend %}
+    <div class="stat-card__trend{% if trend.type %} stat-card__trend--{{ trend.type }}{% endif %}">
+      {{ trend.value }}
+    </div>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Formulaire de connexion #}
+{% macro login_form(action = null, errors = []) %}
+<div class="glass-card p-8 max-w-md mx-auto">
+  <div class="text-center mb-8">
+    <h2 class="text-2xl font-bold text-white mb-2">Connexion</h2>
+  <p class="text-gray-300 on-glass">Accédez à votre compte Auxilius</p>
+  </div>
+
+  {% if errors %}
+    {% for error in errors %}
+      {{ molecules.alert(error, 'error') }}
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" {% if action %}action="{{ action }}"{% endif %}>
+    {{ molecules.form_group('email', 'Adresse email', 'email', '', '', true) }}
+    {{ molecules.form_group('password', 'Mot de passe', 'password', '', '', true) }}
+
+    <div class="flex items-center justify-between mb-6">
+      <label class="flex items-center">
+        <input type="checkbox" name="remember" class="mr-2">
+  <span class="text-sm text-gray-300 on-glass">Se souvenir de moi</span>
+      </label>
+      <a href="#" class="text-sm text-primary hover:text-primary-light">
+        Mot de passe oublié ?
+      </a>
+    </div>
+
+    <button type="submit" class="btn btn--primary w-full">
+      Se connecter
+    </button>
+  </form>
+
+  <div class="text-center mt-6">
+  <p class="text-gray-300 on-glass">
+      Pas encore de compte ?
+      <a href="#" class="text-primary hover:text-primary-light font-medium">
+        S'inscrire
+      </a>
+    </p>
+  </div>
+</div>
+{% endmacro %}
+
+{# Footer principal #}
+{% macro footer(links = [], social = []) %}
+<footer class="footer">
+  <div class="container">
+    <div class="footer__container">
+      <div class="footer__section">
+        <h3>Auxilius</h3>
+        <p>Plateforme de gestion et de suivi de formation pour votre structure.</p>
+        {% if social %}
+          <div class="flex gap-4 mt-4">
+            {% for item in social %}
+              <a href="{{ item.url }}" class="text-gray-400 on-glass hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="{{ item.icon }}"></path>
+                </svg>
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      {% for section in links %}
+        <div class="footer__section">
+          <h4>{{ section.title }}</h4>
+          <ul class="space-y-2">
+            {% for link in section.links %}
+              <li>
+                <a href="{{ link.url }}" class="footer__link">{{ link.label }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="footer__bottom">
+      <p>&copy; 2025 Auxilius. Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>
+{% endmacro %}

@@ -1,0 +1,189 @@
+{# ===========================================
+   DESIGN SYSTEM - MOLECULES
+   Combinaisons d'atomes
+   =========================================== #}
+
+{# Macros atomiques redéfinies localement #}
+{# Redéfinition légère d'atomes si nécessaire (préférer import) #}
+{% macro label(text, forId = '') %}
+<label class="form-label"{% if forId %} for="{{ forId }}"{% endif %}>
+  {{ text }}
+</label>
+{% endmacro %}
+
+{% macro input(name, type = 'text', placeholder = '', value = '', required = false, disabled = false) %}
+<input
+  id="{{ name }}"
+  name="{{ name }}"
+  type="{{ type }}"
+  class="form-input"
+  placeholder="{{ placeholder }}"
+  value="{{ value }}"
+  {% if required %}required{% endif %}
+  {% if disabled %}disabled{% endif %}
+>
+{% endmacro %}
+
+{% macro button(text, variant = 'primary', size = 'md', type = 'button', disabled = false) %}
+<button
+  class="btn btn--{{ variant }} btn--{{ size }}{% if disabled %} disabled{% endif %}"
+  type="{{ type }}"
+  {% if disabled %}disabled{% endif %}
+>
+  {{ text }}
+</button>
+{% endmacro %}
+
+{# Groupe de formulaire (label + input) #}
+{% macro form_group(name, label, type = 'text', placeholder = '', value = '', required = false, error = null, help = null) %}
+<div class="form-group">
+  {% if label %}
+    {{ _self.label(label, name) }}
+  {% endif %}
+
+  {{ _self.input(name, type, placeholder, value, required) }}
+
+  {% if error %}
+    <div class="form-error">{{ error }}</div>
+  {% endif %}
+
+  {% if help %}
+    <div class="form-help">{{ help }}</div>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Groupe de boutons #}
+{% macro button_group(buttons, variant = 'primary', size = 'md') %}
+<div class="flex gap-2">
+  {% for button in buttons %}
+    {{ _self.button(button.text, button.variant|default(variant), size, button.type|default('button'), button.disabled|default(false)) }}
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{# Champ de recherche #}
+{% macro search_input(name, placeholder = 'Rechercher...', value = '') %}
+<div class="relative">
+  <input
+    type="search"
+    name="{{ name }}"
+    id="{{ name }}"
+    class="form-input pl-10"
+    placeholder="{{ placeholder }}"
+    value="{{ value }}"
+  >
+  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+  <svg class="h-5 w-5 text-gray-400 on-glass" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+    </svg>
+  </div>
+</div>
+{% endmacro %}
+
+{# Sélecteur avec label #}
+{% macro select_group(name, label, options, selected = null, required = false) %}
+<div class="form-group">
+  {% if label %}
+    {{ _self.label(label, name) }}
+  {% endif %}
+
+  <select
+    name="{{ name }}"
+    id="{{ name }}"
+    class="form-select"
+    {% if required %}required{% endif %}
+  >
+    {% for option in options %}
+      <option
+        value="{{ option.value }}"
+        {% if selected and selected == option.value %}selected{% endif %}
+      >
+        {{ option.label }}
+      </option>
+    {% endfor %}
+  </select>
+</div>
+{% endmacro %}
+
+{# Carte d'information #}
+{% macro info_card(title, content, icon = null) %}
+<div class="card">
+  <div class="card-body">
+    {% if icon %}
+      <div class="flex items-center mb-4">
+        <div class="flex-shrink-0">
+          <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ icon }}"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-lg font-medium text-gray-900">{{ title }}</h3>
+        </div>
+      </div>
+    {% else %}
+      <h3 class="text-lg font-medium text-gray-900 mb-4">{{ title }}</h3>
+    {% endif %}
+
+    <div class="text-gray-600">
+      {{ content|raw }}
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+{# Alerte avec icône #}
+{% macro alert(message, type = 'info', dismissible = false) %}
+<div class="alert alert--{{ type }}">
+  <div class="flex-shrink-0">
+    {% if type == 'success' %}
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+      </svg>
+    {% elseif type == 'warning' %}
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+      </svg>
+    {% elseif type == 'error' %}
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+      </svg>
+    {% else %}
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+      </svg>
+    {% endif %}
+  </div>
+  <div class="flex-1">
+    {{ message|raw }}
+  </div>
+  {% if dismissible %}
+    <div class="flex-shrink-0">
+      <button type="button" class="alert-dismiss">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+    </div>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Groupe textarea avec label #}
+{% macro textarea_group(name, label, placeholder = '', value = '', required = false, rows = 4) %}
+<div class="form-group">
+  {% if label %}
+    {{ _self.label(label, name) }}
+  {% endif %}
+  <textarea
+    name="{{ name }}"
+    id="{{ name }}"
+    class="form-input form-textarea"
+    placeholder="{{ placeholder }}"
+    {% if required %}required{% endif %}
+    rows="{{ rows }}"
+  >{{ value }}</textarea>
+</div>
+{% endmacro %}

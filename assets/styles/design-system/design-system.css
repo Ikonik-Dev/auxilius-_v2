@@ -1,0 +1,25 @@
+/* ===========================================
+   DESIGN SYSTEM - MAIN ENTRY POINT
+   Point d'entrée principal du système de design
+   =========================================== */
+
+/* Settings - Variables globales */
+@import url("./00-settings/_settings.css");
+
+/* Tools - Mixins et fonctions */
+@import url("./01-tools/_tools.css");
+
+/* Generic - Reset et styles de base */
+@import url("./02-generic/_generic.css");
+
+/* Elements - Styles des éléments HTML de base */
+@import url("./03-elements/_elements.css");
+
+/* Objects - Patterns de mise en page */
+@import url("./04-objects/_objects.css");
+
+/* Components - Composants d'interface complexes */
+@import url("./05-components/_components.css");
+
+/* Utilities - Classes utilitaires */
+@import url("./06-utilities/_utilities.css");
